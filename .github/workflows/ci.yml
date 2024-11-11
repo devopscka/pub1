@@ -13,22 +13,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Fetch tags
+      - name: Fetch all tags
         run: git fetch --tags
 
-      - name: Get latest tag
+      - name: Get the latest tag
         id: get_latest_tag
         run: |
-          # Get the latest tag or set a default if none exists
-          LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || echo "v0.0.0")
+          # List all tags, sort by version, and get the latest one
+          LATEST_TAG=$(git tag | sort -V | tail -n 1)
+          if [ -z "$LATEST_TAG" ]; then
+            LATEST_TAG="v0.0.0"
+          fi
           echo "Latest tag: $LATEST_TAG"
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
 
       - name: Determine next version
         id: increment_version
         run: |
-          # Extract the current version parts
-          TAG=${LATEST_TAG#v} # Remove the 'v' prefix if it exists
+          # Remove 'v' prefix if it exists and parse major, minor, patch
+          TAG=${LATEST_TAG#v}
           MAJOR=$(echo $TAG | cut -d. -f1)
           MINOR=$(echo $TAG | cut -d. -f2)
           PATCH=$(echo $TAG | cut -d. -f3)
