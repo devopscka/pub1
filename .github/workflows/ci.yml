@@ -1,0 +1,54 @@
+name: Semantic Version Tagging
+
+on:
+  push:
+    branches:
+      - main  # Run only on pushes to the main branch
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Fetch tags
+        run: git fetch --tags
+
+      - name: Get latest tag
+        id: get_latest_tag
+        run: |
+          # Get the latest tag or set a default if none exists
+          LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || echo "v0.0.0")
+          echo "Latest tag: $LATEST_TAG"
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+
+      - name: Determine next version
+        id: increment_version
+        run: |
+          # Extract the current version parts
+          TAG=${LATEST_TAG#v} # Remove the 'v' prefix if it exists
+          MAJOR=$(echo $TAG | cut -d. -f1)
+          MINOR=$(echo $TAG | cut -d. -f2)
+          PATCH=$(echo $TAG | cut -d. -f3)
+
+          # Increment the patch version
+          PATCH=$((PATCH + 1))
+
+          # Generate the next tag
+          NEXT_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+          echo "Next tag: $NEXT_TAG"
+          echo "NEXT_TAG=$NEXT_TAG" >> $GITHUB_ENV
+
+      - name: Create and push new tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Tag the commit with the next version tag
+          git tag $NEXT_TAG
+          # Push the new tag to the repository
+          git push origin $NEXT_TAG
+
+      - name: Print the new tag
+        run: echo "Tagged with ${{ env.NEXT_TAG }}"
