@@ -3,14 +3,30 @@ name: Deploy to AKS
 on: [push]
 
 jobs:
-  deploy:
+  deploy-dev:
     runs-on: ubuntu-latest
-    environment: dev  # Selects the environment
+    environment: dev  # Selects the dev environment
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Print Environment Variable
-        run: echo "Environment is $MY_ENV_VAR"
+      - name: Print Dev Environment Variable
+        run: echo "Dev Environment Variable: $DEV_ENV_VAR"
         env:
-          MY_ENV_VAR: ${{ secrets.MY_ENV_VAR }}
+          DEV_ENV_VAR: ${{ secrets.DEV_ENV_VAR }}
+
+  deploy-test:
+    runs-on: ubuntu-latest
+    needs: deploy-dev  # Run this job only after dev deployment succeeds
+    environment: test  # Selects the test environment
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Print Test Environment Variable
+        run: echo "Test Environment Variable: $TEST_ENV_VAR"
+        env:
+          TEST_ENV_VAR: ${{ secrets.TEST_ENV_VAR }}
+
+
+          
