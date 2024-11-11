@@ -13,4 +13,18 @@ jobs:
       - name: Print Environment Variable
         run: echo "Environment is $MY_ENV_VAR"
         env:
+          #if you have saved as variables use vars.
           MY_ENV_VAR: ${{ vars.MY_ENV_VAR }}
+          #if you have saved as secrets use secrets.
+          MY_ENV_VAR: ${{ secrets.MY_ENV_VAR }}
+
+  deploy-test:
+    runs-on: ubuntu-latest
+    needs: deploy
+    environment: test
+    steps:
+      - name: Print Test Environment Variable
+        run: echo "Test Environment Variable: $MY_ENV_VAR"
+        env:
+          TEST_ENV_VAR: ${{ vars.MY_ENV_VAR }}
+          #TEST_ENV_VAR: ${{ secrets.MY_ENV_VAR }}
