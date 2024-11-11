@@ -27,6 +27,3 @@ jobs:
         run: echo "Test Environment Variable: $TEST_ENV_VAR"
         env:
           TEST_ENV_VAR: ${{ secrets.TEST_ENV_VAR }}
-
-
-          
