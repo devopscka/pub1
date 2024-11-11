@@ -9,6 +9,9 @@ jobs:
   tag:
     runs-on: ubuntu-latest
 
+    env:
+      VERSION_PART: major  # Set to 'major', 'minor', or 'patch'
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -36,8 +39,17 @@ jobs:
           MINOR=$(echo $TAG | cut -d. -f2)
           PATCH=$(echo $TAG | cut -d. -f3)
 
-          # Increment the patch version
-          PATCH=$((PATCH + 1))
+          # Decide which part to increment based on VERSION_PART
+          if [ "$VERSION_PART" = "major" ]; then
+            MAJOR=$((MAJOR + 1))
+            MINOR=0
+            PATCH=0
+          elif [ "$VERSION_PART" = "minor" ]; then
+            MINOR=$((MINOR + 1))
+            PATCH=0
+          else
+            PATCH=$((PATCH + 1))
+          fi
 
           # Generate the next tag
           NEXT_TAG="v${MAJOR}.${MINOR}.${PATCH}"
