@@ -24,7 +24,7 @@ jobs:
     environment: test
     steps:
       - name: Print Test Environment Variable
-        run: echo "Test Environment Variable: $MY_ENV_VAR"
+        run: echo "Test Environment Variable is $MY_ENV_VAR"
         env:
           TEST_ENV_VAR: ${{ vars.MY_ENV_VAR }}
-          #TEST_ENV_VAR: ${{ secrets.MY_ENV_VAR }}
+          TEST_ENV_VAR: ${{ secrets.MY_ENV_VAR }}
