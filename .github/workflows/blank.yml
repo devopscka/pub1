@@ -19,7 +19,7 @@ jobs:
           #MY_ENV_VAR: ${{ secrets.MY_ENV_VAR }}
 
   deploy-test:
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
     needs: deploy
     environment: test
     steps:
