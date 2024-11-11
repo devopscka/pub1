@@ -1,0 +1,16 @@
+name: Deploy to AKS
+
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev  # Selects the environment
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Print Environment Variable
+        run: echo "Environment is $MY_ENV_VAR"
+        env:
+          MY_ENV_VAR: ${{ secrets.MY_ENV_VAR }}
