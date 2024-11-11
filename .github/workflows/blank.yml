@@ -13,7 +13,7 @@ jobs:
       - name: Print Dev Environment Variable
         run: echo "Dev Environment Variable: $MY_ENV_VAR"
         env:
-          DEV_ENV_VAR: ${{ secrets.DEV_ENV_VAR }}
+          MY_ENV_VAR: ${{ secrets.MY_ENV_VAR }}
 
   deploy-test:
     runs-on: ubuntu-latest
