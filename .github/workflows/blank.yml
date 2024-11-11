@@ -13,4 +13,4 @@ jobs:
       - name: Print Environment Variable
         run: echo "Environment is $MY_ENV_VAR"
         env:
-          MY_ENV_VAR: ${{ env.MY_ENV_VAR }}
+          MY_ENV_VAR: ${{ vars.MY_ENV_VAR }}
