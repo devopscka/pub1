@@ -16,7 +16,7 @@ jobs:
           #if you have saved as variables use vars.
           MY_ENV_VAR: ${{ vars.MY_ENV_VAR }}
           #if you have saved as secrets use secrets.
-          MY_ENV_VAR: ${{ secrets.MY_ENV_VAR }}
+          #MY_ENV_VAR: ${{ secrets.MY_ENV_VAR }}
 
   deploy-test:
     runs-on: ubuntu-latest
@@ -27,4 +27,4 @@ jobs:
         run: echo "Test Environment Variable is $MY_ENV_VAR"
         env:
           TEST_ENV_VAR: ${{ vars.MY_ENV_VAR }}
-          TEST_ENV_VAR: ${{ secrets.MY_ENV_VAR }}
+          #TEST_ENV_VAR: ${{ secrets.MY_ENV_VAR }}
