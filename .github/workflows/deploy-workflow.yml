@@ -1,0 +1,40 @@
+name: Deploy Workflow
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Deployment environment (dev, test, stg, prod)'
+        required: true
+        type: string
+      version:
+        description: 'Version to deploy'
+        required: true
+        type: string
+    secrets:
+      DEPLOY_SECRET:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up environment-specific configurations
+        run: |
+          echo "Deploying version ${{ inputs.version }} to the ${{ inputs.environment }} environment"
+          # Set environment-specific variables or configurations here if needed
+
+      - name: Access deployment secret
+        run: echo "Using deployment secret for environment ${{ inputs.environment }}"
+        # Use the secret in your deployment script
+        env:
+          SECRET: ${{ secrets.DEPLOY_SECRET }}
+
+      - name: Deploy Application
+        run: |
+          # Example deployment command - replace with actual deployment logic
+          echo "Deploying to ${{ inputs.environment }} with version ${{ inputs.version }}"
