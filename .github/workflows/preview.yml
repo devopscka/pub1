@@ -10,10 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up GitHub CLI
-        uses: actions/setup-node@v3
-
-      - name: Create Deployment
+      - name: Display Preview URL
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -22,18 +19,6 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             /repos/${{ github.repository }}/deployments \
             -f ref="${{ github.sha }}" \
-            -f environment="staging" \
-            -f description="Testing static URL display" \
-            -f required_contexts="[]"  # Disable required status checks
-
-      - name: Update Deployment Status with Static URL
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh api \
-            -X POST \
-            -H "Accept: application/vnd.github+json" \
-            /repos/${{ github.repository }}/deployments/${{ github.run_id }}/statuses \
-            -f state="success" \
-            -f environment_url="https://example.com/preview" \
-            -f log_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            -f environment="preview" \
+            -f description="Previewing URL" \
+            -f environment_url="https://example.com/preview"
