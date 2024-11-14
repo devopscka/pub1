@@ -21,4 +21,5 @@ jobs:
             -f ref="${{ github.sha }}" \
             -f environment="preview" \
             -f description="Previewing URL" \
-            -f environment_url="https://example.com/preview"
+            -f environment_url="https://example.com/preview" \
+            -F required_contexts="[]"  # Bypasses required status checks
