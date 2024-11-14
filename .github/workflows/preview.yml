@@ -23,7 +23,8 @@ jobs:
             /repos/${{ github.repository }}/deployments \
             -f ref="${{ github.sha }}" \
             -f environment="staging" \
-            -f description="Testing static URL display"
+            -f description="Testing static URL display" \
+            -f required_contexts="[]"  # Disable required status checks
 
       - name: Update Deployment Status with Static URL
         env:
