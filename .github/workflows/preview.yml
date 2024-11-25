@@ -22,4 +22,5 @@ jobs:
             -f environment="preview" \
             -f description="Previewing URL" \
             -f environment_url="https://example.com/preview" \
-            -F required_contexts="[]"  # Bypasses required status checks
+            -F required_contexts=[]
+
