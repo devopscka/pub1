@@ -64,7 +64,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: tag  # This ensures the 'build' job runs only after the 'tag' job
-    run-name: "CI Pipeline for version ${{ needs.tag.outputs.next_tag }}"
+    name: Build for branch ${{ github.ref_name }} by @${{ github.actor }} for commit message ${{ github.event.head_commit.message }}
 
     steps:
       - name: Checkout code
