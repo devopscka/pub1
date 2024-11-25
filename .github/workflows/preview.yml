@@ -1,25 +1,22 @@
-name: Display URL in Deployment UI
+name: List ENV Variables
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  display-url:
+  list-variables:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - name: Display Preview URL
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh api \
-            -X POST \
-            -H "Accept: application/vnd.github+json" \
-            /repos/${{ github.repository }}/deployments \
-            -f ref="${{ github.sha }}" \
-            -f environment="preview" \
-            -f description="Previewing URL" \
-            -f environment_url="https://example.com/preview" \
-            -F required_contexts=[]
+      - name: List Windows ENV Variables
+        shell: bash
+        if : ${{ matrix.os == 'windows-latest' }}
+        run: set
+
+      - name: List Linux/MacOS ENV Variables
+        shell: bash
+        if : ${{ matrix.os != 'windows-latest' }}
+        run: env
