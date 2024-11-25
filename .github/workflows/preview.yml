@@ -22,4 +22,4 @@ jobs:
             -f environment="preview" \
             -f description="Previewing URL" \
             -f environment_url="https://example.com/preview" \
-            -f required_contexts=@- <<EOF
+            -F required_contexts=[]
