@@ -35,7 +35,7 @@ jobs:
             LATEST_TAG="v0.0.0"
           fi
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
-          echo "::set-output name=latest_tag::$LATEST_TAG"
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_ENV
 
       - name: Determine next version
         id: increment_version
@@ -52,7 +52,7 @@ jobs:
           fi
           NEXT_TAG="v${MAJOR}.${MINOR}.${PATCH}"
           echo "NEXT_TAG=$NEXT_TAG" >> $GITHUB_ENV
-          echo "::set-output name=next_tag::$NEXT_TAG"
+          echo "next_tag=$NEXT_TAG" >> $GITHUB_ENV
 
       - name: Create and push new tag
         env:
@@ -73,6 +73,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Uncomment the following steps and configure ACR credentials if needed
       # - name: Login to Azure Container Registry (ACR)
       #   uses: azure/docker-login@v1
       #   with:
@@ -82,8 +83,8 @@ jobs:
 
       # - name: Build Docker image with version tag
       #   run: |
-      #     docker build . --file Dockerfile --tag <your-acr-name>.azurecr.io/my-image-name:${{ needs.tag.outputs.next_tag }}
+      #     docker build . --file Dockerfile --tag <your-acr-name>.azurecr.io/my-image-name:${{ env.next_tag }}
 
       # - name: Push Docker image to ACR
       #   run: |
-      #     docker push <your-acr-name>.azurecr.io/my-image-name:${{ needs.tag.outputs.next_tag }}
+      #     docker push <your-acr-name>.azurecr.io/my-image-name:${{ env.next_tag }}
